@@ -50,6 +50,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 value: state.filters.glutenFree,
                 onChanged: (isChecked) {
                   setState(() {
+                    // Test git
                     context
                         .read<FiltersBloc>()
                         .add(GlutenFilterChanged(state.filters));
