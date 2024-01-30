@@ -14,7 +14,7 @@ class MealDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final favoriteMeals = dummyMeals;
 
-final isFavorite = favoriteMeals.contains(meal);
+  final isFavorite = favoriteMeals.contains(meal);
 
     return Scaffold(
       appBar: AppBar(

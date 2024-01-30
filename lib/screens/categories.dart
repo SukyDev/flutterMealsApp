@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:multi_screen_app_bloc/bloc/filters/filters_bloc.dart';
 import 'package:multi_screen_app_bloc/data/dummy_data.dart';
 import 'package:multi_screen_app_bloc/screens/meals.dart';
 import 'package:multi_screen_app_bloc/widgets/category_grid_item.dart';
 import 'package:multi_screen_app_bloc/models/category.dart';
 import 'package:multi_screen_app_bloc/models/meal.dart';
 
+import '../bloc/filters/filters_state.dart';
+
 // 17.01.
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({
+  CategoriesScreen({
     super.key,
     required this.availableMeals,
   });

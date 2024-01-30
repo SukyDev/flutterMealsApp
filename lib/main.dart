@@ -19,7 +19,9 @@ final theme = ThemeData(
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  HydratedBloc.storage = await HydratedStorage.build(storageDirectory: await getTemporaryDirectory());
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getTemporaryDirectory(),
+  );
   Bloc.observer = SimpleBlocObserver();
   runApp(const App());
 }

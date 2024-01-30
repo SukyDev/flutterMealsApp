@@ -1,13 +1,34 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:multi_screen_app_bloc/bloc/filters/filters_bloc.dart';
 import 'package:multi_screen_app_bloc/models/meal.dart';
 import 'package:multi_screen_app_bloc/screens/meal_details.dart';
 import 'package:multi_screen_app_bloc/widgets/meal_item.dart';
 
-class MealsScreen extends StatelessWidget {
-  const MealsScreen({super.key, this.title, required this.meals});
+class MealsScreen extends StatefulWidget {
+  MealsScreen({super.key, this.title, required this.meals});
 
   final String? title;
-  final List<Meal> meals;
+  List<Meal> meals;
+
+  @override
+  State<StatefulWidget> createState() {
+    return _MealsScreen();
+  }
+}
+
+class _MealsScreen extends State<MealsScreen> {
+  final bloc = FiltersBloc();
+
+  @override
+  void initState() {
+    if (widget.title != null) {
+      checkFilters();
+    }
+    super.initState();
+  }
 
   void _selectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(
@@ -15,6 +36,28 @@ class MealsScreen extends StatelessWidget {
         builder: (ctx) => MealDetailsScreen(meal: meal),
       ),
     );
+  }
+
+  void checkFilters() {
+    final bloc = FiltersBloc();
+    final availableMeals = widget.meals.where((meal) {
+      if (bloc.state.filters.glutenFree && !meal.isGlutenFree) {
+        return false;
+      }
+      if (bloc.state.filters.lactoseFree && !meal.isLactoseFree) {
+        return false;
+      }
+      if (bloc.state.filters.vegetarian && !meal.isVegetarian) {
+        return false;
+      }
+      if (bloc.state.filters.vegan && !meal.isVegan) {
+        return false;
+      }
+      return true;
+    }).toList();
+    setState(() {
+      widget.meals = availableMeals;
+    });
   }
 
   @override
@@ -43,11 +86,11 @@ class MealsScreen extends StatelessWidget {
       ),
     );
 
-    if (meals.isNotEmpty) {
+    if (widget.meals.isNotEmpty) {
       content = ListView.builder(
-        itemCount: meals.length,
+        itemCount: widget.meals.length,
         itemBuilder: (ctx, index) => MealItem(
-          meal: meals[index],
+          meal: widget.meals[index],
           selectMeal: (meal) {
             _selectMeal(context, meal);
           },
@@ -55,12 +98,12 @@ class MealsScreen extends StatelessWidget {
       );
     }
 
-    if (title == null) {
+    if (widget.title == null) {
       return content;
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text(title!),
+          title: Text(widget.title!),
         ),
         body: content,
         // (children: [

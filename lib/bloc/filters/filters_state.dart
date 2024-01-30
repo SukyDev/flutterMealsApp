@@ -8,6 +8,12 @@ class FiltersState extends Equatable {
 
   Filters filters;
 
+  FiltersState copyWith({required filters}) {
+    return FiltersState(
+        filters: filters ?? this.filters
+    );
+  }
+
   factory FiltersState.fromJson(Map<String, dynamic> json) {
     return FiltersState(
       filters: Filters.fromJson(json['filters']),
@@ -20,9 +26,4 @@ class FiltersState extends Equatable {
 
   @override
   List<Object?> get props => [filters];
-  FiltersState copyWith({required filters}) {
-    return FiltersState(
-      filters: filters ?? this.filters
-    );
-  }
 }

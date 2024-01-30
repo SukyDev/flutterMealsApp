@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:multi_screen_app_bloc/bloc/filters_bloc.dart';
-import 'package:multi_screen_app_bloc/bloc/filters_state.dart';
+import 'package:multi_screen_app_bloc/bloc/filters/filters_bloc.dart';
+import 'package:multi_screen_app_bloc/bloc/filters/filters_state.dart';
 import 'package:multi_screen_app_bloc/models/filters.dart';
 
-import '../bloc/filters_event.dart';
+import '../bloc/filters/filters_event.dart';
 
-class FiltersScreen extends StatefulWidget {
+class FiltersScreen extends StatelessWidget {
   const FiltersScreen({super.key});
-
-  @override
-  State<FiltersScreen> createState() {
-    return _FiltersScreenState();
-  }
-}
-
-class _FiltersScreenState extends State<FiltersScreen> {
-  final bloc = FiltersBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +15,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
         appBar: AppBar(
           title: const Text('Your filters'),
         ),
-        // drawer: MainDrawer(onSelectScreen: (identifier) {
-        //   Navigator.of(context).pop();
-        //   if (identifier == 'meals') {
-        //     Navigator.of(context).pushReplacement(
-        //       MaterialPageRoute(
-        //         builder: (ctx) => const TabsScreen(),
-        //       ),
-        //     );
-        //   }
-        // }),
         body: BlocProvider(
           create: (context) => FiltersBloc(),
           child: _filtersScreen(),
@@ -49,12 +30,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
               SwitchListTile(
                 value: state.filters.glutenFree,
                 onChanged: (isChecked) {
-                  setState(() {
-                    // Test git
                     context
                         .read<FiltersBloc>()
                         .add(GlutenFilterChanged(state.filters));
-                  });
                 },
                 title: Text(
                   'Gluten-free',
@@ -74,12 +52,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
               SwitchListTile(
                 value: state.filters.lactoseFree,
                 onChanged: (isChecked) {
-                  setState(() {
                     context
                         .read<FiltersBloc>()
                         .add(LactoseFilterChanged(state.filters));
-                    // changeLactoseFilter(isChecked);
-                  });
                 },
                 title: Text(
                   'Lactose-free',
@@ -99,11 +74,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
               SwitchListTile(
                 value: state.filters.vegetarian,
                 onChanged: (isChecked) {
-                  setState(() {
                     context
                         .read<FiltersBloc>()
                         .add(VegetarianFilterChanged(state.filters));
-                  });
                 },
                 title: Text(
                   'Vegetarian',
@@ -123,11 +96,11 @@ class _FiltersScreenState extends State<FiltersScreen> {
               SwitchListTile(
                 value: state.filters.vegan,
                 onChanged: (isChecked) {
-                  setState(() {
+                  // setState(() {
                     context
                         .read<FiltersBloc>()
                         .add(VeganFilterChanged(state.filters));
-                  });
+                  // });
                 },
                 title: Text(
                   'Vegan',

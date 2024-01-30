@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:multi_screen_app_bloc/bloc/filters/filters_bloc.dart';
 import 'package:multi_screen_app_bloc/data/dummy_data.dart';
 import 'package:multi_screen_app_bloc/models/filters.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:multi_screen_app_bloc/screens/categories.dart';
 import 'package:multi_screen_app_bloc/screens/filters.dart';
 import 'package:multi_screen_app_bloc/screens/meals.dart';
 import 'package:multi_screen_app_bloc/widgets/main_drawer.dart';
-import 'package:multi_screen_app_bloc/providers/meals_provider.dart';
-import 'package:multi_screen_app_bloc/providers/favorites_provider.dart';
 import 'package:multi_screen_app_bloc/providers/filters_provider.dart';
 
-final kInitialFilters = Filters(
+const kInitialFilters = Filters(
   glutenFree: false,
   lactoseFree: false,
   vegetarian: false,
@@ -35,9 +34,7 @@ class _TabsScreenState extends State<TabsScreen> {
     Filter.vegan: false
   };
 
-  void _showInfoMessage(String message) {
-    
-  }
+  void _showInfoMessage(String message) {}
 
   // void _toggleMealFrvoriteStatus(Meal meal) {
   //   final isExisting = _favoriteMeals.contains(meal);
@@ -78,10 +75,10 @@ class _TabsScreenState extends State<TabsScreen> {
     //   });
     // }
     await Navigator.of(context).push<Filters>(
-        MaterialPageRoute(
-          builder: (ctx) => const FiltersScreen(),
-        ),
-      );
+      MaterialPageRoute(
+        builder: (ctx) => const FiltersScreen(),
+      ),
+    );
   }
 
   @override
@@ -98,7 +95,12 @@ class _TabsScreenState extends State<TabsScreen> {
         availableMeals: availableMeals,
       );
     } else {
-      final favoriteMeals = [dummyMeals[0], dummyMeals[1], dummyMeals[2], dummyMeals[3]];
+      final favoriteMeals = [
+        dummyMeals[0],
+        dummyMeals[1],
+        dummyMeals[2],
+        dummyMeals[3]
+      ];
       selectedScreen = MealsScreen(
         meals: favoriteMeals,
       );
@@ -111,7 +113,9 @@ class _TabsScreenState extends State<TabsScreen> {
       drawer: MainDrawer(
         onSelectScreen: _selectedScreen,
       ),
-      body: selectedScreen,
+      body: BlocProvider<FiltersBloc>(create: (context) => FiltersBloc(),
+      child: selectedScreen,)
+      ,
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
