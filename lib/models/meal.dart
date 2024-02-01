@@ -1,15 +1,23 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 enum Complexity {
   simple,
   challenging,
-  hard,
+  hard;
+  
+  String toJson() => name;
+  static Complexity fromJson(String json) => values.byName(json);
 }
 
 enum Affordability {
   affordable,
   pricey,
-  luxurious,
+  luxurious;
+  
+  String toJson() => name;
+  static Affordability fromJson(String json) => values.byName(json);
 }
 
 class Meal extends Equatable {
@@ -43,8 +51,44 @@ class Meal extends Equatable {
   final bool isVegan;
   final bool isVegetarian;
 
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['categories'] = categories;
+    data['title'] = title;
+    data['imageUrl'] = imageUrl;
+    data['ingredients'] = ingredients;
+    data['steps'] = steps;
+    data['duration'] = duration;
+    data['complexity'] = complexity.toJson();
+    data['affordability'] = affordability.toJson();
+    data['isGlutenFree'] = isGlutenFree;
+    data['isLactoseFree'] = isLactoseFree;
+    data['isVegan'] = isVegan;
+    data['isVegetarian'] = isVegetarian;
+    return data;
+  }
+
+  factory Meal.fromJson(Map<String, dynamic> json) {
+    return Meal(id: json['id'],
+        categories: json['categories'],
+        title: json['title'],
+        imageUrl: json['imageUrl'],
+        ingredients: json['ingredients'],
+        steps: json['steps'],
+        duration: json['duration'],
+        complexity: Complexity.fromJson(json['complexity']),
+        affordability: Affordability.fromJson(json['affordability']),
+        isGlutenFree: json['isGlutenFree'],
+        isLactoseFree: json['isLactoseFree'],
+        isVegan: json['isVegan'],
+        isVegetarian: json['isVegetarian']);
+  }
+
   @override
-  List<Object?> get props => [
+  List<Object?> get props =>
+      [
         id,
         categories,
         title,

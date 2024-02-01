@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multi_screen_app_bloc/bloc/favorites/favorites_bloc.dart';
 import 'package:multi_screen_app_bloc/bloc/filters/filters_bloc.dart';
 import 'package:multi_screen_app_bloc/models/meal.dart';
 import 'package:multi_screen_app_bloc/screens/meal_details.dart';
@@ -21,12 +22,14 @@ class MealsScreen extends StatefulWidget {
 
 class _MealsScreen extends State<MealsScreen> {
   final bloc = FiltersBloc();
+  final favoritesBloc = FavoritesBloc();
 
   @override
   void initState() {
     if (widget.title != null) {
       checkFilters();
     }
+    print('Favorites ${favoritesBloc.state.favoriteMeals.meals}');
     super.initState();
   }
 

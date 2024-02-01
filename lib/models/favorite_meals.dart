@@ -1,16 +1,35 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
+import 'package:multi_screen_app_bloc/data/dummy_data.dart';
 import 'package:multi_screen_app_bloc/models/meal.dart';
 
 class FavoriteMeals extends Equatable {
-  List<Meal>? meals;
+  final List<Meal> meals;
 
-  FavoriteMeals({this.meals = const [],});
+  const FavoriteMeals({
+    this.meals = const [],
+  });
 
-  FavoriteMeals.copyWith({List<Meal>? meals}) {
-    FavoriteMeals(meals: meals ?? this.meals);
+  FavoriteMeals copyWith({List<Meal>? meals}) {
+    return FavoriteMeals(
+      meals: meals ?? this.meals
+    );
+  }
+
+  factory FavoriteMeals.fromJson(Map<String, dynamic> json) {
+    return FavoriteMeals(meals: json['favoriteMeals']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    String encoded = jsonEncode(meals);
+    print("Encoded meals ${encoded}");
+    data['favoriteMeals'] = encoded;
+    print("Encoded data for meals ${data['favoriteMeals']}");
+    return data;
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [meals];
 }

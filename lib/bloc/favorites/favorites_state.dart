@@ -1,11 +1,10 @@
 import 'package:equatable/equatable.dart';
-import 'package:multi_screen_app_bloc/bloc/filters/filters_state.dart';
-import 'package:multi_screen_app_bloc/models/meal.dart';
+import 'package:multi_screen_app_bloc/models/favorite_meals.dart';
 
 class FavoritesState extends Equatable {
-  FavoritesState({required this.favoriteMeals});
+  FavoritesState({this.favoriteMeals = const FavoriteMeals()});
 
-  List<Meal> favoriteMeals;
+  FavoriteMeals favoriteMeals;
 
   FavoritesState copyWith({required favoriteMeals}) {
     return FavoritesState(
@@ -14,7 +13,13 @@ class FavoritesState extends Equatable {
   }
 
   factory FavoritesState.fromJson(Map<String, dynamic> json) {
-    return FavoritesState(favoriteMeals: [].fromJson['favorites']);
+    return FavoritesState(
+      favoriteMeals: FavoriteMeals.fromJson(json['favorites']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'favorites': favoriteMeals.toJson()};
   }
 
   @override

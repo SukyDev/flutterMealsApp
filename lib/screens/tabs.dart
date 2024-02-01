@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:multi_screen_app_bloc/bloc/favorites/favorites_bloc.dart';
 import 'package:multi_screen_app_bloc/bloc/filters/filters_bloc.dart';
 import 'package:multi_screen_app_bloc/data/dummy_data.dart';
 import 'package:multi_screen_app_bloc/models/filters.dart';
@@ -27,6 +28,7 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedIndex = 0;
+  final favoritesBloc = FavoritesBloc();
   Map<Filter, bool> _selectedFilters = {
     Filter.glutenFree: false,
     Filter.lactoseFree: false,
@@ -95,14 +97,9 @@ class _TabsScreenState extends State<TabsScreen> {
         availableMeals: availableMeals,
       );
     } else {
-      final favoriteMeals = [
-        dummyMeals[0],
-        dummyMeals[1],
-        dummyMeals[2],
-        dummyMeals[3]
-      ];
+      final favoriteMeals = favoritesBloc.state.favoriteMeals.meals;
       selectedScreen = MealsScreen(
-        meals: favoriteMeals,
+        meals: favoriteMeals ?? [],
       );
     }
 
